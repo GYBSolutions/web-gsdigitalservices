@@ -1,0 +1,58 @@
+import type { Testimonial } from "@/types";
+
+export const testimonials: Testimonial[] = [
+  {
+    id: "1",
+    name: "Marcus Chen",
+    role: "CEO & Co-Founder",
+    company: "FinTrack",
+    content: "Yen is the rare engineer who thinks like a product person. The architecture decisions made early in our iOS app saved us from a complete rewrite 18 months later when we hit 80K users. The code quality is exceptional — our new engineers consistently say it's the cleanest codebase they've worked in.",
+    rating: 5,
+    projectType: "iOS Application",
+  },
+  {
+    id: "2",
+    name: "Sarah Williams",
+    role: "CTO",
+    company: "PulseAI Health",
+    content: "We had a complex technical challenge: real-time health data from Apple Watch, on-device ML, and a personalized AI coach — all without destroying battery life. Yen not only solved it, but the architecture is so clean we've been able to iterate rapidly for 18 months without major refactors. Truly elite engineering.",
+    rating: 5,
+    projectType: "iOS + Backend",
+  },
+  {
+    id: "3",
+    name: "David Park",
+    role: "Founder",
+    company: "ShopOS",
+    content: "From zero to 200+ paying merchants in 60 days. Yen moved incredibly fast without cutting corners on quality. The multi-tenant architecture he designed from day one scaled seamlessly. I've worked with many engineers — few combine this level of technical depth with genuine product intuition.",
+    rating: 5,
+    projectType: "SaaS Platform",
+  },
+  {
+    id: "4",
+    name: "Rachel Torres",
+    role: "VP of Engineering",
+    company: "EstateIQ",
+    content: "The computer vision pipeline Yen built reduced our listing time by 95%. What impressed me most wasn't just the technical execution — it was how he navigated the ambiguity of a novel AI product, made smart bets on architecture, and delivered on time. He's the kind of engineer who makes a whole team better.",
+    rating: 5,
+    projectType: "iOS + AI Platform",
+  },
+  {
+    id: "5",
+    name: "James Mitchell",
+    role: "Operations Director",
+    company: "RouteIQ Logistics",
+    content: "We process 10,000 deliveries daily with Yen's system. The offline-first architecture for drivers was a game-changer — we have routes through areas with zero signal and it just works. The fuel savings alone have paid for the project three times over in the first year.",
+    rating: 5,
+    projectType: "iOS + Backend",
+  },
+  {
+    id: "6",
+    name: "Priya Sharma",
+    role: "Head of Product",
+    company: "StreamKit",
+    content: "Yen's ability to own both the technical architecture and the product experience is exceptional. He pushed back on over-engineered solutions, kept us focused on what mattered for launch, and delivered a streaming platform our creators are genuinely raving about. Already planning phase 2 together.",
+    rating: 5,
+    projectType: "Full-Stack Platform",
+  },
+];

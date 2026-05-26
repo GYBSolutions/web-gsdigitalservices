@@ -1,0 +1,156 @@
+import type { CaseStudy } from "@/types";
+
+export const caseStudies: CaseStudy[] = [
+  {
+    id: "fintrack-case-study",
+    slug: "fintrack-personal-finance",
+    title: "Building a Production iOS Finance App from Zero",
+    client: "FinTrack (Startup)",
+    industry: "FinTech",
+    duration: "8 months",
+    role: "Lead iOS & Backend Engineer",
+    summary: "Designed and built a full-stack iOS personal finance application from zero to 80K active users, featuring on-device ML transaction categorization and real-time bank sync.",
+    problem: "The founders had a validated idea — a smarter personal finance app — but no technical team. They needed an engineer who could own the full stack: iOS architecture, backend APIs, data modeling, and the AI layer for intelligent transaction insights.",
+    solution: "I designed a Clean Architecture iOS app built on SwiftUI with modular feature packages, an on-device Core ML model for transaction classification, and a lean Node.js backend for bank sync via Plaid. The architecture was designed from day one to support a future engineering team.",
+    architecture: "iOS: MVVM + Clean Architecture with SPM feature packages, Combine for reactive data flow, Core Data + CloudKit for offline-first sync. Backend: Node.js API gateway, PostgreSQL for user data, Redis for rate limiting and caching, deployed on AWS ECS. AI: Custom Core ML model trained with Create ML, updated via silent OTA model updates.",
+    stack: ["Swift", "SwiftUI", "Core Data", "Core ML", "Create ML", "Combine", "Node.js", "PostgreSQL", "Redis", "Plaid API", "Stripe", "AWS ECS", "Firebase"],
+    challenges: [
+      {
+        title: "Bank sync reliability",
+        description: "Bank APIs are unreliable and rate-limited. Building a sync layer that felt real-time to users while respecting API constraints was the core technical challenge.",
+        resolution: "Implemented a WebSocket-first approach with intelligent polling fallback and optimistic UI updates. Background app refresh handles quiet sync, while foreground sessions use a priority queue to sync the most recent transactions first.",
+      },
+      {
+        title: "On-device ML performance",
+        description: "The transaction categorization model needed to run in under 10ms per transaction without measurable battery impact.",
+        resolution: "Trained a compact MobileNet-inspired model with Create ML, quantized to INT8. Batched inference runs on background threads with Core ML's neural engine. Real-world energy consumption: < 0.1% battery per 1,000 transactions.",
+      },
+      {
+        title: "Encryption at rest without server-side keys",
+        description: "Financial data required end-to-end encryption, but couldn't require users to manage keys.",
+        resolution: "Used a hybrid encryption scheme: per-user AES-256 keys derived from iCloud Keychain, encrypted with the Secure Enclave, with server-side storing only encrypted blobs.",
+      },
+    ],
+    results: [
+      { label: "Active Users", value: "80K+", improvement: "Organic growth in 18 months" },
+      { label: "App Store Rating", value: "4.9★", improvement: "2,000+ ratings" },
+      { label: "Crash-Free Sessions", value: "99.97%", improvement: "Well above industry average" },
+      { label: "ML Accuracy", value: "94%", improvement: "Transaction categorization" },
+      { label: "Load Time", value: "< 400ms", improvement: "65% faster than v1" },
+    ],
+    process: [
+      {
+        phase: "01",
+        title: "Discovery & Architecture",
+        description: "Ran discovery sessions to understand the product vision, competitive landscape, and technical constraints. Designed the full architecture before writing a line of code.",
+        duration: "2 weeks",
+        deliverables: ["Architecture document", "ADRs for key decisions", "Data model design", "API contract v1"],
+      },
+      {
+        phase: "02",
+        title: "Core Foundation",
+        description: "Built the foundational iOS app architecture: navigation, design system, networking layer, and data persistence. Established patterns for the entire codebase.",
+        duration: "4 weeks",
+        deliverables: ["iOS project skeleton", "Design system", "Core networking", "Authentication flow"],
+      },
+      {
+        phase: "03",
+        title: "Feature Development",
+        description: "Sprint-based development of core features: bank sync, transaction list, categorization, budgeting, and insights. Continuous TestFlight deployments for founder feedback.",
+        duration: "12 weeks",
+        deliverables: ["Bank sync (Plaid)", "Transaction management", "AI categorization", "Budget features", "Insights dashboard"],
+      },
+      {
+        phase: "04",
+        title: "QA & Performance",
+        description: "Systematic testing: unit tests for business logic, UI tests for critical paths, Instruments profiling for performance, security audit for data handling.",
+        duration: "3 weeks",
+        deliverables: ["Test suite (85% coverage)", "Performance benchmarks", "Security review", "Accessibility audit"],
+      },
+      {
+        phase: "05",
+        title: "Launch & Scaling",
+        description: "App Store submission, phased rollout, monitoring setup, and iterative improvements based on real user data.",
+        duration: "Ongoing",
+        deliverables: ["App Store launch", "Monitoring dashboards", "Feature iterations", "ML model updates"],
+      },
+    ],
+    featured: true,
+    year: 2024,
+    accentColor: "#10B981",
+  },
+  {
+    id: "shopos-case-study",
+    slug: "shopos-ecommerce-saas",
+    title: "0 to 200 Merchants: Building a Multi-Tenant SaaS in 90 Days",
+    client: "ShopOS (Startup)",
+    industry: "E-commerce / SaaS",
+    duration: "5 months",
+    role: "Full-Stack Engineer & Technical Co-founder (contract)",
+    summary: "Designed and built a multi-tenant SaaS platform on top of the Shopify ecosystem, reaching 200+ paying merchants within 60 days of launch through AI-powered analytics and automated re-engagement.",
+    problem: "Shopify merchants had access to raw analytics but lacked the tools to act on them intelligently. The founders needed a platform that could ingest merchant data, surface actionable insights, and automate customer re-engagement — all without requiring merchants to have data expertise.",
+    solution: "Built a multi-tenant Next.js SaaS with Supabase for data isolation, Shopify API integration with intelligent rate limiting, and an AI insights layer that surfaces recommendations in plain language. The platform was designed to be installed via Shopify app in under 2 minutes.",
+    architecture: "Next.js 14 App Router with server components for dashboard performance. Supabase for multi-tenant database with row-level security. Background jobs via Vercel Cron for merchant data sync. OpenAI for natural language insights generation. Stripe Connect for subscription billing.",
+    stack: ["Next.js 14", "TypeScript", "Supabase", "PostgreSQL", "OpenAI GPT-4", "Shopify API", "Stripe Connect", "Vercel", "TailwindCSS", "Framer Motion"],
+    challenges: [
+      {
+        title: "Multi-tenant data isolation",
+        description: "Ensuring one merchant can never access another's data, even with query bugs or injection attempts.",
+        resolution: "Supabase row-level security policies on every table, enforced at the database level. Every query runs in a tenant-scoped context. Tested with adversarial queries during development.",
+      },
+      {
+        title: "Shopify API rate limits at scale",
+        description: "With 200+ stores each making regular API calls, staying within Shopify's rate limits while keeping data fresh was a significant engineering challenge.",
+        resolution: "Built a custom queue with per-merchant rate tracking, exponential backoff, and priority levels. High-value merchants (high GMV) get priority sync; others use scheduled background jobs.",
+      },
+      {
+        title: "AI insights quality and cost",
+        description: "Generating useful, accurate insights for every merchant without ballooning API costs.",
+        resolution: "Implemented a tiered approach: rule-based insights for common patterns (free to generate), LLM insights for complex analysis (cached and amortized). Cache hit rate of 65% significantly reduces OpenAI costs.",
+      },
+    ],
+    results: [
+      { label: "Merchants (60 days)", value: "200+", improvement: "Organic & product-led growth" },
+      { label: "Revenue Recovered", value: "$2.4M+", improvement: "Across all merchants, year 1" },
+      { label: "Average MRR Growth", value: "+40%", improvement: "Month-over-month" },
+      { label: "Churn Rate", value: "< 3%", improvement: "Monthly" },
+      { label: "Time to Install", value: "< 2 min", improvement: "Shopify app store" },
+    ],
+    process: [
+      {
+        phase: "01",
+        title: "Market & Technical Discovery",
+        description: "Analyzed 20+ existing Shopify apps to understand positioning. Designed the architecture for multi-tenancy from day one — this decision paid dividends at scale.",
+        duration: "1 week",
+        deliverables: ["Competitive analysis", "Architecture design", "Data model", "API integration plan"],
+      },
+      {
+        phase: "02",
+        title: "Core Platform",
+        description: "Built the multi-tenant foundation: authentication, onboarding, Shopify OAuth, data sync, and the dashboard shell.",
+        duration: "3 weeks",
+        deliverables: ["Multi-tenant auth", "Shopify integration", "Data sync pipeline", "Dashboard shell"],
+      },
+      {
+        phase: "03",
+        title: "AI & Analytics Layer",
+        description: "Built the AI insights engine, analytics processing pipeline, and the re-engagement automation tools.",
+        duration: "4 weeks",
+        deliverables: ["AI insights engine", "Analytics dashboard", "Re-engagement automations", "Email templates"],
+      },
+      {
+        phase: "04",
+        title: "Billing & Launch",
+        description: "Integrated Stripe Connect for subscription billing, submitted to Shopify App Store, and prepared go-to-market.",
+        duration: "2 weeks",
+        deliverables: ["Stripe billing", "Shopify app listing", "Documentation", "Launch"],
+      },
+    ],
+    featured: true,
+    year: 2023,
+    accentColor: "#6366F1",
+  },
+];
+
+export const getFeaturedCaseStudies = () => caseStudies.filter((cs) => cs.featured);
+export const getCaseStudyBySlug = (slug: string) => caseStudies.find((cs) => cs.slug === slug);
