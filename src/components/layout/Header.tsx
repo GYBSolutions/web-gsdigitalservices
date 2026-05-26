@@ -9,6 +9,7 @@ import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useAdminMode } from "@/lib/admin/AdminModeContext";
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -79,6 +80,7 @@ export function Header() {
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const { t } = useLanguage();
+  const isAdmin = useAdminMode();
 
   useEffect(() => {
     setMounted(true);
@@ -146,7 +148,8 @@ export function Header() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
         className={cn(
-          "fixed top-0 z-50 w-full transition-all duration-300",
+          "fixed z-50 w-full transition-all duration-300",
+          isAdmin ? "top-10" : "top-0",
           scrolled
             ? "border-b border-border/50 bg-background/80 backdrop-blur-xl shadow-sm"
             : "bg-transparent"
@@ -222,7 +225,7 @@ export function Header() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-16 z-40 border-b border-border bg-background/95 backdrop-blur-xl shadow-lg md:hidden"
+            className={cn("fixed inset-x-0 z-40 border-b border-border bg-background/95 backdrop-blur-xl shadow-lg md:hidden", isAdmin ? "top-[6.5rem]" : "top-16")}
           >
             <nav className="container mx-auto py-4 flex flex-col gap-1">
               {navItems.map((item, i) => (
