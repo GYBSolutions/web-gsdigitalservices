@@ -3,8 +3,7 @@ import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 import { AdminModeProvider } from "@/lib/admin/AdminModeContext";
 import { AdminBar } from "@/components/admin/AdminBar";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
+import { ConditionalHeader, ConditionalFooter } from "@/components/layout/ConditionalHeader";
 import { isAdminAuthenticated } from "@/lib/admin/session";
 import "./globals.css";
 
@@ -92,9 +91,9 @@ export default async function RootLayout({
           <LanguageProvider>
             <AdminModeProvider isAdmin={isAdmin}>
               {isAdmin && <div className="h-10" />}
-              <Header />
+              <ConditionalHeader />
               <main className="relative">{children}</main>
-              <Footer />
+              <ConditionalFooter />
             </AdminModeProvider>
           </LanguageProvider>
         </ThemeProvider>
