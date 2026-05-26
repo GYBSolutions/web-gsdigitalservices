@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Zap, LayoutDashboard, FolderOpen, Briefcase, MessageSquare, Star, LogOut, ExternalLink } from "lucide-react";
+import { Zap, LayoutDashboard, FolderOpen, Briefcase, MessageSquare, Star, LogOut, ExternalLink, Mail } from "lucide-react";
 import { logoutAction } from "./login/actions";
 
 const navLinks = [
@@ -9,6 +9,7 @@ const navLinks = [
   { href: "/admin/projects", label: "Proyectos", icon: FolderOpen },
   { href: "/admin/services", label: "Servicios", icon: Briefcase },
   { href: "/admin/testimonials", label: "Testimonios", icon: MessageSquare },
+  { href: "/admin/contacts", label: "Contactos", icon: Mail },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

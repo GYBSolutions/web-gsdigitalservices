@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Zap, Pencil, Plus, LayoutDashboard, LogOut } from "lucide-react";
+import { Zap, Pencil, Plus, LayoutDashboard, LogOut, Mail } from "lucide-react";
 import { logoutAction } from "@/app/admin/login/actions";
 
 interface AdminBarProps {
@@ -58,6 +58,13 @@ export function AdminBar({ isAdmin }: AdminBarProps) {
         >
           <Pencil className="h-3 w-3" />
           Testimonios
+        </Link>
+        <Link
+          href="/admin/contacts"
+          className="flex items-center gap-1 px-2.5 py-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors whitespace-nowrap"
+        >
+          <Mail className="h-3 w-3" />
+          Contactos
         </Link>
       </nav>
 

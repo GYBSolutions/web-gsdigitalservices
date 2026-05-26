@@ -59,6 +59,7 @@ export function ProjectCard({ project, className, index = 0 }: ProjectCardProps)
                   type="ios"
                   accentColor={project.accentColor}
                   size="sm"
+                  imageUrl={project.imageUrl}
                   className="pb-0"
                 />
               ) : (
@@ -66,6 +67,7 @@ export function ProjectCard({ project, className, index = 0 }: ProjectCardProps)
                   type={project.mockupType === "dashboard" ? "dashboard" : "web"}
                   accentColor={project.accentColor}
                   size="sm"
+                  imageUrl={project.imageUrl}
                   className="w-full pb-2 px-2"
                 />
               )}

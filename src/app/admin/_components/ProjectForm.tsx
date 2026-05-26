@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useTransition, useState } from "react";
+import React, { useTransition, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import type { Project } from "@/types";
 import { saveProjectAction } from "../actions";
 import { FormCard, Field, Grid, SaveBar } from "./AdminForm";
 import { AppMockup } from "@/components/shared/AppMockup";
+import { ImagePlus, X } from "lucide-react";
 
 interface ProjectFormProps {
   project?: Partial<Project> & { sort_order?: number };
@@ -21,6 +22,23 @@ export function ProjectForm({ project, isNew }: ProjectFormProps) {
   const [mockupType, setMockupType] = useState<"ios" | "web" | "dashboard">(
     (project?.mockupType as "ios" | "web" | "dashboard") ?? "web"
   );
+  const [imagePreview, setImagePreview] = useState<string | null>(project?.imageUrl ?? null);
+  const [removeImage, setRemoveImage] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImagePreview(URL.createObjectURL(file));
+      setRemoveImage(false);
+    }
+  }
+
+  function handleRemoveImage() {
+    setImagePreview(null);
+    setRemoveImage(true);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
 
   const arrToLines = (arr?: string[]) => (arr ?? []).join("\n");
   const metricsToLines = (metrics?: { value: string; label: string; improvement?: string }[]) =>
@@ -149,6 +167,60 @@ export function ProjectForm({ project, isNew }: ProjectFormProps) {
           <div className="mt-4 flex justify-center rounded-2xl border border-dashed border-border bg-muted/20 py-6 overflow-hidden">
             <AppMockup type={mockupType} accentColor={accentColor} size="sm" />
           </div>
+        </FormCard>
+
+        {/* Image upload */}
+        <FormCard title="Imagen del proyecto">
+          <p className="text-xs text-muted-foreground mb-4">
+            Captura de pantalla real del proyecto. Se mostrará dentro del marco (phone o browser).
+            <br />
+            <span className="text-foreground/60">
+              📱 Móvil: 390×844px · 🖥️ Web: 1280×800px
+            </span>
+          </p>
+
+          {imagePreview ? (
+            <div className="relative rounded-xl overflow-hidden border border-border max-w-xs mb-4">
+              <img src={imagePreview} alt="Preview" className="w-full h-auto max-h-64 object-cover object-top" />
+              <button
+                type="button"
+                onClick={handleRemoveImage}
+                className="absolute top-2 right-2 flex h-7 w-7 items-center justify-center rounded-full bg-background/80 border border-border text-muted-foreground hover:text-destructive hover:border-destructive/50 transition-colors"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          ) : (
+            <div
+              onClick={() => fileInputRef.current?.click()}
+              className="mb-4 flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-border bg-muted/20 py-10 cursor-pointer hover:border-brand-500/40 hover:bg-brand-500/5 transition-colors"
+            >
+              <ImagePlus className="h-8 w-8 text-muted-foreground/40 mb-2" />
+              <p className="text-sm text-muted-foreground">Haz clic para subir una imagen</p>
+              <p className="text-xs text-muted-foreground/60 mt-1">PNG, JPG, WebP · Máx 5MB</p>
+            </div>
+          )}
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            name="imageFile"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="hidden"
+          />
+          <input type="hidden" name="existingImageUrl" value={project?.imageUrl ?? ""} />
+          {removeImage && <input type="hidden" name="removeImage" value="true" />}
+
+          {!imagePreview && (
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="text-xs text-brand-400 hover:text-brand-300 transition-colors"
+            >
+              Seleccionar archivo
+            </button>
+          )}
         </FormCard>
 
         {/* Stack & Tags */}

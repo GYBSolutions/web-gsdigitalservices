@@ -37,9 +37,28 @@ CREATE TABLE IF NOT EXISTS testimonials (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Contact form submissions
+CREATE TABLE IF NOT EXISTS contact_submissions (
+  id         BIGSERIAL PRIMARY KEY,
+  name       TEXT NOT NULL,
+  email      TEXT NOT NULL,
+  company    TEXT,
+  service    TEXT,
+  timeline   TEXT,
+  budget     TEXT,
+  message    TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  read       BOOLEAN DEFAULT FALSE
+);
+
 -- Disable RLS so the service role can read/write freely
 -- (the admin uses the service role key server-side)
-ALTER TABLE site_settings DISABLE ROW LEVEL SECURITY;
-ALTER TABLE projects       DISABLE ROW LEVEL SECURITY;
-ALTER TABLE services       DISABLE ROW LEVEL SECURITY;
-ALTER TABLE testimonials   DISABLE ROW LEVEL SECURITY;
+ALTER TABLE site_settings        DISABLE ROW LEVEL SECURITY;
+ALTER TABLE projects              DISABLE ROW LEVEL SECURITY;
+ALTER TABLE services              DISABLE ROW LEVEL SECURITY;
+ALTER TABLE testimonials          DISABLE ROW LEVEL SECURITY;
+ALTER TABLE contact_submissions   DISABLE ROW LEVEL SECURITY;
+
+-- Storage bucket for project images (run once)
+-- Create the bucket in Supabase Dashboard > Storage > New bucket
+-- Name: project-images, Public: ON

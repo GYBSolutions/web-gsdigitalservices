@@ -49,6 +49,27 @@ export async function saveProjectAction(formData: FormData) {
       })
       .filter((m) => m.value && m.label);
 
+  // Handle image upload to Supabase Storage
+  const imageFile = formData.get("imageFile") as File | null;
+  const existingImageUrl = (formData.get("existingImageUrl") as string) || undefined;
+  const removeImage = formData.get("removeImage") === "true";
+
+  let imageUrl: string | undefined = removeImage ? undefined : (existingImageUrl || undefined);
+
+  if (!removeImage && imageFile && imageFile.size > 0) {
+    const ext = imageFile.name.split(".").pop()?.toLowerCase() || "jpg";
+    const filePath = `${id}.${ext}`;
+    const { data: uploadData, error: uploadError } = await db.storage
+      .from("project-images")
+      .upload(filePath, imageFile, { contentType: imageFile.type || "image/jpeg", upsert: true });
+    if (!uploadError && uploadData) {
+      const { data: urlData } = db.storage
+        .from("project-images")
+        .getPublicUrl(uploadData.path);
+      imageUrl = urlData.publicUrl;
+    }
+  }
+
   const data = {
     id,
     slug,
@@ -67,6 +88,7 @@ export async function saveProjectAction(formData: FormData) {
     status: formData.get("status") as string,
     accentColor: (formData.get("accentColor") as string) || "#7C3AED",
     mockupType: (formData.get("mockupType") as string) || "web",
+    imageUrl,
   };
 
   const { error } = await db.from("projects").upsert({
